@@ -73,9 +73,9 @@ public class TodoController {
             Todo existingTodo = todoService.getTodoById(id);
             if (existingTodo == null) {
                 return ResponseEntity.status(404).body("Todo not found.");
-            } else if (Objects.isNull(todo.getDescription())) {
+            }if (Objects.isNull(todo.getDescription())) {
                 todo.setDescription(existingTodo.getDescription());
-            } else if (Objects.isNull(todo.getTitle())) {
+            }if (Objects.isNull(todo.getTitle())) {
                 todo.setTitle(existingTodo.getTitle());
             }
 

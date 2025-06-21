@@ -1,10 +1,12 @@
 package org.task.springboottodoapi.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Todo {
     private long id;
     private String title;
