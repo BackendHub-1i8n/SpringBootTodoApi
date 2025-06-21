@@ -1,8 +1,6 @@
 package org.task.springboottodoapi.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.task.springboottodoapi.model.Todo;
 import org.task.springboottodoapi.services.TodoService;
@@ -56,6 +54,11 @@ public class TodoController {
             if (Objects.isNull(todo.getTitle()) || Objects.isNull(todo.getDescription())) {
                 return ResponseEntity.badRequest().body("Title and description are required.");
             }
+            if (todo.getPriority() == null) {
+                todo.setPriority("low"); // Default priority if not provided
+            } else if (!List.of("low", "medium", "high").contains(todo.getPriority())) {
+                return ResponseEntity.badRequest().body("Invalid priority. Allowed values are: low, medium, high.");
+            }
             String response = todoService.createTodo(todo);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -98,7 +101,7 @@ public class TodoController {
         return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
     }
 
-    @PostMapping("/{id}/complete")
+    @PutMapping("/{id}/complete")
     public ResponseEntity<Object> completeTodo(@PathVariable Long id) {
         try {
             String response = todoService.onComplete(id);

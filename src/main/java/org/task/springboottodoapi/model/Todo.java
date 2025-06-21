@@ -12,14 +12,16 @@ public class Todo {
     private boolean completed;
     private String createdAt;
     private String updatedAt;
+    private String priority;
 
 
-    public Todo(String title, String description) {
+    public Todo(String title, String description, String priority) {
         this.title = title;
         this.description = description;
         this.completed = false;
         this.createdAt = java.time.LocalDateTime.now().toString();
         this.updatedAt = java.time.LocalDateTime.now().toString();
+        this.priority = priority;
     }
 
 }

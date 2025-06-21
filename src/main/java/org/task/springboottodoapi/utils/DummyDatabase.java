@@ -38,6 +38,10 @@ public class DummyDatabase {
         this.dataSource = new ArrayList<>();
     }
 
+    public void setData(List<Todo> dataSource) {
+        this.dataSource = dataSource;
+    };
+
     public static DummyDatabase getInstance() {
         if (DummyDatabase.instance == null){
             logger.info("Creating a new instance of DummyDatabase");
