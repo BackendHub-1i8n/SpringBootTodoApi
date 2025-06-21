@@ -1,5 +1,6 @@
 package org.task.springboottodoapi.model;
 
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,8 @@ public class Todo {
     private String title;
     private String description;
     private boolean completed;
-    private String createdAt;
-    private String updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private String priority;
 
 
@@ -21,8 +22,8 @@ public class Todo {
         this.title = title;
         this.description = description;
         this.completed = false;
-        this.createdAt = java.time.LocalDateTime.now().toString();
-        this.updatedAt = java.time.LocalDateTime.now().toString();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
         this.priority = priority;
     }
 
