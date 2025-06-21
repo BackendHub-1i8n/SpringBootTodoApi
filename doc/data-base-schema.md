@@ -8,7 +8,7 @@ Basado en tu alcance, propongo un esquema robusto y escalable con autenticación
 ### **1. Tabla `users` (Autenticación)**
 | Campo           | Tipo         | Descripción                          | Restricciones                     |  
 |-----------------|--------------|--------------------------------------|-----------------------------------|  
-| `id`            | `SERIAL`     | Identificador único.                 | `PRIMARY KEY`                     |  
+| `id`            | `UUID`     | Identificador único.                 | `PRIMARY KEY`                     |  
 | `username`      | `VARCHAR(50)`| Nombre de usuario (único).          | `NOT NULL, UNIQUE`                |  
 | `email`         | `VARCHAR(100)`| Correo electrónico.                 | `NOT NULL, UNIQUE`                |  
 | `password_hash` | `VARCHAR(255)`| Hash de contraseña (bcrypt).        | `NOT NULL`                        |  
@@ -24,7 +24,7 @@ Basado en tu alcance, propongo un esquema robusto y escalable con autenticación
 ### **2. Tabla `tasks` (Tareas)**
 | Campo           | Tipo          | Descripción                          | Restricciones                     |  
 |-----------------|---------------|--------------------------------------|-----------------------------------|  
-| `id`            | `SERIAL`      | Identificador único.                 | `PRIMARY KEY`                     |  
+| `id`            | `UUID`      | Identificador único.                 | `PRIMARY KEY`                     |  
 | `title`         | `VARCHAR(100)`| Título de la tarea.                  | `NOT NULL`                        |  
 | `description`   | `TEXT`        | Descripción detallada.               |                                   |  
 | `completed`     | `BOOLEAN`     | Estado de completado.                | `DEFAULT FALSE`                   |  
@@ -32,7 +32,7 @@ Basado en tu alcance, propongo un esquema robusto y escalable con autenticación
 | `due_date`      | `TIMESTAMP`   | Fecha límite (opcional).             |                                   |  
 | `created_at`    | `TIMESTAMP`   | Fecha de creación.                   | `DEFAULT NOW()`                   |  
 | `updated_at`    | `TIMESTAMP`   | Fecha de actualización.              | `DEFAULT NOW(), ON UPDATE NOW()`  |  
-| `user_id`       | `INTEGER`     | Usuario asignado.                    | `FOREIGN KEY (users.id)`          |  
+| `user_id`       | `UUID`     | Usuario asignado.                    | `FOREIGN KEY (users.id)`          |  
 
 **Mejoras futuras:**
 - Añadir `labels` (etiquetas) como `JSONB` o tabla separada.
@@ -43,7 +43,7 @@ Basado en tu alcance, propongo un esquema robusto y escalable con autenticación
 ### **3. Tabla `revoked_tokens` (JWT Invalidados)**
 | Campo         | Tipo         | Descripción                          | Restricciones         |  
 |--------------|--------------|--------------------------------------|-----------------------|  
-| `id`         | `SERIAL`     | Identificador único.                 | `PRIMARY KEY`         |  
+| `id`         | `UUID`     | Identificador único.                 | `PRIMARY KEY`         |  
 | `token`      | `TEXT`       | Token JWT revocado.                  | `NOT NULL, UNIQUE`    |  
 | `expires_at` | `TIMESTAMP`  | Fecha de expiración del token.       | `NOT NULL`            |  
 
@@ -57,15 +57,15 @@ Basado en tu alcance, propongo un esquema robusto y escalable con autenticación
 ### **4. Tabla `labels` (Etiquetas/Opcional)**
 | Campo       | Tipo          | Descripción                | Restricciones         |  
 |------------|---------------|----------------------------|-----------------------|  
-| `id`       | `SERIAL`      | Identificador único.       | `PRIMARY KEY`         |  
+| `id`       | `UUID`      | Identificador único.       | `PRIMARY KEY`         |  
 | `name`     | `VARCHAR(50)` | Nombre de la etiqueta.     | `NOT NULL, UNIQUE`    |  
 | `color`    | `VARCHAR(7)`  | Código HEX (ej: `#FF5733`).|                       |  
 
 ### **5. Tabla `task_labels` (Relación Tareas-Etiquetas)**
 | Campo       | Tipo      | Descripción                | Restricciones                 |  
 |------------|-----------|----------------------------|-------------------------------|  
-| `task_id`  | `INTEGER` | ID de la tarea.            | `FOREIGN KEY (tasks.id)`      |  
-| `label_id` | `INTEGER` | ID de la etiqueta.         | `FOREIGN KEY (labels.id)`     |  
+| `task_id`  | `UUID`    | ID de la tarea.            | `FOREIGN KEY (tasks.id)`      |  
+| `label_id` | `UUID` | ID de la etiqueta.         | `FOREIGN KEY (labels.id)`     |  
 
 ---
 
