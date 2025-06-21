@@ -12,18 +12,7 @@ import java.util.logging.Logger;
 
 @Component
 public class DummyDatabase {
-    static Logger logger = Logger.getLogger(DummyDatabase.class.getName());
     private List<Todo> dataSource;
-    private String template = """
-            {
-                "id": %d,
-                "title": "%s",
-                "description": "%s",
-                "completed": %b,
-                "createdAt": "%s",
-                "updatedAt": "%s"
-            }
-            """;
     private String errorTemplate = """
             {
                 "error": "%s"
@@ -73,6 +62,7 @@ public class DummyDatabase {
 
     public String save(Todo todo) {
         try {
+            todo.setId(idCounter.incrementAndGet());
             this.dataSource.add(todo);
             return String.format(successTemplate, "Todo created successfully");
         }catch (Exception e){
@@ -116,7 +106,6 @@ public class DummyDatabase {
 
     @PostConstruct
     public void init() {
-        logger.info("Initializing Dummy Database with sample data");
         SAMPLE_TODOS.forEach(item -> item.setId(idCounter.incrementAndGet()));
         this.dataSource.addAll(SAMPLE_TODOS);
     }

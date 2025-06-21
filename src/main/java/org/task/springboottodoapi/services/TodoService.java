@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class TodoService {
-    private final AtomicLong id = new AtomicLong();
     private final DummyDatabase dummyDatabase;
 
 
@@ -26,7 +25,6 @@ public class TodoService {
     }
 
     public String createTodo(Todo todo) {
-        todo.setId(id.incrementAndGet());
         return dummyDatabase.save(todo);
     }
 

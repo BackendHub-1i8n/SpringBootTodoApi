@@ -77,6 +77,10 @@ public class TodoController {
                 todo.setDescription(existingTodo.getDescription());
             }if (Objects.isNull(todo.getTitle())) {
                 todo.setTitle(existingTodo.getTitle());
+            }if (todo.getPriority() != null && !List.of("low", "medium", "high").contains(todo.getPriority())) {
+                return ResponseEntity.badRequest().body("Invalid priority. Allowed values are: low, medium, high.");
+            }if (Objects.isNull(todo.getPriority())) {
+                todo.setPriority(existingTodo.getPriority());
             }
 
             String response = todoService.updateTodo(id, todo);
