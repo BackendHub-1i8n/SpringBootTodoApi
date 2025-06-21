@@ -2,3 +2,7 @@
 spring:
   application:
     name: SpringBootTodoApi
+
+logging:
+  level:
+    org.task.springboottodoapi.utils: warn
