@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+doc/.$DataBaseDiagram.drawio.bkp
+doc/.$*
+doc/.$DataBaseDiagram.drawio
+doc/.$DataBaseDiagram.drawio.svg
+
+# Excluye archivos .env
+.env
+.env.local
+config/env.properties
+
+# Excluye archivos de configuración de Docker
+docker-compose.override.yml
+db
