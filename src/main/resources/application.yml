@@ -2,7 +2,12 @@
 spring:
   application:
     name: SpringBootTodoApi
+  profiles:
+    active: dev
 
 logging:
   level:
     org.task.springboottodoapi.utils: warn
+
+application:
+  startup-time: ${java.time.LocalDateTime.now()}
