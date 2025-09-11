@@ -2,17 +2,17 @@ package org.task.springboottodoapi.utils;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
-import org.task.springboottodoapi.model.Todo;
+import org.task.springboottodoapi.model.TodoModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
 
 @Component
 public class DummyDatabase {
-    private List<Todo> dataSource;
+    private List<TodoModel> dataSource;
     private String errorTemplate = """
             {
                 "error": "%s"
@@ -24,53 +24,51 @@ public class DummyDatabase {
                 "message": "%s"
             }
             """;
-    private final AtomicLong idCounter = new AtomicLong(0);
-    private static final List<Todo> SAMPLE_TODOS = List.of(
-            new Todo("Learn Spring Boot", "Complete the Spring Boot tutorial", "high"),
-            new Todo("Build a REST API", "Create a simple REST API using Spring Boot", "medium"),
-            new Todo("Deploy to Heroku", "Deploy the Spring Boot application to Heroku", "low"),
-            new Todo("Write Unit Tests", "Add unit tests for the Spring Boot application", "medium"),
-            new Todo("Learn Docker", "Understand the basics of Docker and containerization", "low"),
-            new Todo("Explore Spring Security", "Implement basic authentication and authorization", "high"),
-            new Todo("Integrate with a Database", "Connect the Spring Boot application to a database", "medium"),
-            new Todo("Implement Logging", "Set up logging for the Spring Boot application", "low"),
-            new Todo("Create a Frontend", "Build a simple frontend using React or Angular", "medium"),
-            new Todo("Learn about Microservices", "Understand the principles of microservices architecture", "high"),
-            new Todo("Explore Spring Cloud", "Learn about Spring Cloud for building distributed systems", "medium"),
-            new Todo("Implement Caching", "Add caching to improve performance", "low"),
-            new Todo("Learn about Asynchronous Processing", "Implement asynchronous processing in Spring Boot", "medium"),
-            new Todo("Explore Spring Data JPA", "Use Spring Data JPA for database operations", "high"));
+    private static final List<TodoModel> SAMPLE_TODOS = List.of(
+            new TodoModel("Learn Spring Boot", "Complete the Spring Boot tutorial", Priority.HIGH),
+            new TodoModel("Build a REST API", "Create a simple REST API using Spring Boot", Priority.MEDIUM),
+            new TodoModel("Deploy to Heroku", "Deploy the Spring Boot application to Heroku", Priority.LOW),
+            new TodoModel("Write Unit Tests", "Add unit tests for the Spring Boot application", Priority.MEDIUM),
+            new TodoModel("Learn Docker", "Understand the basics of Docker and containerization", Priority.HIGH),
+            new TodoModel("Explore Spring Security", "Implement basic authentication and authorization", Priority.MEDIUM),
+            new TodoModel("Integrate with a Database", "Connect the Spring Boot application to a database", Priority.HIGH),
+            new TodoModel("Implement Logging", "Set up logging for the Spring Boot application", Priority.LOW),
+            new TodoModel("Create a Frontend", "Build a simple frontend using React or Angular", Priority.MEDIUM),
+            new TodoModel("Learn about Microservices", "Understand the principles of microservices architecture", Priority.HIGH),
+            new TodoModel("Explore Spring Cloud", "Learn about Spring Cloud for building distributed systems", Priority.MEDIUM),
+            new TodoModel("Implement Caching", "Add caching to improve performance", Priority.LOW),
+            new TodoModel("Learn about Asynchronous Processing", "Implement asynchronous processing in Spring Boot", Priority.MEDIUM),
+            new TodoModel("Explore Spring Data JPA", "Use Spring Data JPA for database operations", Priority.HIGH));
 
     private DummyDatabase() {
         this.dataSource = new ArrayList<>();
     }
 
-    public void setData(List<Todo> dataSource) {
+    public void setData(List<TodoModel> dataSource) {
         this.dataSource = dataSource;
     }
 
-    public List<Todo> findAll() {
+    public List<TodoModel> findAll() {
         return this.dataSource;
     }
 
-    public Todo findById(long id) {
+    public TodoModel findById(UUID id) {
         return this.dataSource.stream()
                 .filter(todo -> todo.getId() == id)
                 .findFirst()
                 .orElse(null);
     }
 
-    public String save(Todo todo) {
+    public String save(TodoModel todo) {
         try {
-            todo.setId(idCounter.incrementAndGet());
             this.dataSource.add(todo);
             return String.format(successTemplate, "Todo created successfully");
         }catch (Exception e){
             return String.format(errorTemplate, e.getMessage());
         }
     }
-    public String update(long id, Todo todo) {
-        Todo existingTodo = findById(id);
+    public String update(UUID id, TodoModel todo) {
+        TodoModel existingTodo = findById(id);
         if (!Objects.isNull(existingTodo)) {
             existingTodo.setTitle(todo.getTitle());
             existingTodo.setDescription(todo.getDescription());
@@ -82,8 +80,8 @@ public class DummyDatabase {
         }
     }
 
-    public String complete(long id) {
-        Todo existingTodo = findById(id);
+    public String complete(UUID id) {
+        TodoModel existingTodo = findById(id);
         if (!Objects.isNull(existingTodo)) {
             existingTodo.setCompleted(!existingTodo.isCompleted());
             existingTodo.setUpdatedAt(java.time.LocalDateTime.now());
@@ -93,8 +91,8 @@ public class DummyDatabase {
         }
     }
 
-    public String delete(long id) {
-        Todo existingTodo = findById(id);
+    public String delete(UUID id) {
+        TodoModel existingTodo = findById(id);
         if (!Objects.isNull(existingTodo)) {
             this.dataSource.remove(existingTodo);
             return String.format(successTemplate, "Todo deleted successfully");
@@ -106,7 +104,6 @@ public class DummyDatabase {
 
     @PostConstruct
     public void init() {
-        SAMPLE_TODOS.forEach(item -> item.setId(idCounter.incrementAndGet()));
         this.dataSource.addAll(SAMPLE_TODOS);
     }
 }
